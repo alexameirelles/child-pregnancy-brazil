@@ -88,6 +88,9 @@ total_nascidos_municipio_2004_2024.csv
 comparacao_casos_por_mil.csv
 taxa_casos_por_mil_uf_ano.csv
 
+# macOS
+.DS_Store
+
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
 #   intended to run in multiple environments; otherwise, check them in:
