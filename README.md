@@ -65,7 +65,7 @@ The analysis was conducted in Python using pandas. Since the data were accessed 
 
 Instead, the work focused on exploratory data analysis and the calculation of demographic, geographic, and temporal indicators. 
 
-A broad set of variables—including age, race/color, marital status, education, geographic distribution, and birth trends—was examined. While several indicators were explored during the reporting process, the final story highlights only those that best supported the project's central findings.
+A broad set of variables, including age, race/color, marital status, education, geographic distribution, and birth trends, was examined. However, the final story highlights only those that best supported the project's central findings.
 
 Visualizations were built using D3.js, including an animated line chart,
 choropleth map, sparklines and waffle charts.
@@ -74,11 +74,11 @@ choropleth map, sparklines and waffle charts.
 
 # Main findings
 
--   Births to girls aged 14 and younger have declined substantially since 2004.
--   In 2024, 12,007 babies were born to girls in this age group.
--   Northern states consistently recorded the highest rates per 1,000 live births.
--   Nearly three-quarters of the girls who gave birth were registered as parda or black.
--   More than one in ten were recorded as married or living in a stable union.
+- Births to girls aged 14 and younger have declined substantially since 2004.
+- In 2024, 12,007 babies were born to girls in this age group.
+- Northern states consistently recorded the highest rates per 1,000 live births.
+- Nearly three-quarters of the girls who gave birth were registered as parda or black.
+- One in ten were recorded as married or living in a stable union.
 
 
 ------------------------------------------------------------------------
@@ -96,7 +96,7 @@ Throughout the project, I learned how to:
 - Create coordinated interactions between multiple visualizations;
 - Improve the accessibility of SVG graphics using ARIA attributes and keyboard navigation;
 
-The official documentation for D3 and Base dos Dados, and pandas were my primary references throughout the project. The official documentation for D3, Base dos Dados, and pandas served as my primary references throughout the project. AI-assisted explanations also played an important role in the development process, particularly while building the D3 visualizations. They helped me understand unfamiliar concepts, troubleshoot bugs, and experiment with different implementation approaches.
+The official documentation for D3 and Base dos Dados, and pandas were my primary references throughout the project. The official documentation for D3, Base dos Dados, and pandas served as my primary references throughout the project. AI-assisted explanations also played an important role in the development process, particularly while building the D3 visualizations, helping me understand unfamiliar concepts, troubleshoot bugs, and experiment with different implementation approaches.
 
 ------------------------------------------------------------------------
 

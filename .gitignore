@@ -87,7 +87,6 @@ microdados_sinasc_2004_2024.csv
 total_nascidos_municipio_2004_2024.csv
 comparacao_casos_por_mil.csv
 taxa_casos_por_mil_uf_ano.csv
-uf_year.csv
 
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
