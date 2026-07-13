@@ -101,10 +101,10 @@ The official documentation for D3 and Base dos Dados, and pandas were my primary
 Given more time, I would like to:
 
 - Conduct interviews with healthcare professionals, child rights organizations, and girls affected by sexual violence to complement the quantitative analysis;
-- Expand the analysis with additional demographic and geographic indicators;
+- Compare similar datasets from other countries to understand how births to girls under 14 vary across different contexts and explore how factors such as GDP, Human Development Index (HDI), gender equality, and access to reproductive rights may influence these patterns.
+- Add more interactive elements and richer transitions between the visualizations;
 - Continue improving the accessibility of the visualizations, particularly for screen readers;
 - Refine the mobile experience with layouts specifically designed for smaller screens;
-- Add more interactive elements and richer transitions between the visualizations;
 - Update the analysis with 2025 data.
 
 ------------------------------------------------------------------------
