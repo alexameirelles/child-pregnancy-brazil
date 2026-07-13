@@ -627,6 +627,14 @@ body{
   pointer-events:none;
 }
 
+.sparkline-scale-note{
+  margin-top:.65rem;
+  font-family:var(--chart-font);
+  font-size:.75rem;
+  line-height:1.45;
+  color:#999;
+}
+
 
 /* ── 2024 PROFILE DASHBOARD ── */
 
@@ -984,6 +992,10 @@ footer a{
       </p>
 
       <div id="region-grid"></div>
+
+      <div class="sparkline-scale-note">
+        Note: For rates per 1,000 live births, all charts share the same y-axis scale because the values are more comparable. For total cases, each chart uses its own y-axis scale.
+      </div>
     </div>
   </div>
 </div>
@@ -1943,6 +1955,13 @@ function drawRegionGrid() {
 
   const states = regions[currentRegion];
 
+  const sharedRateMax = d3.max(
+    stateData,
+    d => Number.isFinite(d.casos_por_mil)
+      ? d.casos_por_mil
+      : null
+  );
+
   const regionGroup = container.append("section")
     .attr("class", "region-group");
 
@@ -1992,13 +2011,13 @@ function drawRegionGrid() {
 
     const sparkSvg = card.append("svg");
 
-    drawSparkline(sparkSvg, series, cardIndex);
+    drawSparkline(sparkSvg, series, cardIndex, sharedRateMax);
   });
 }
 
 /* Sparkline (mini charts) component */
 
-function drawSparkline(svg, data, cardIndex = 0) {
+function drawSparkline(svg, data, cardIndex = 0, sharedRateMax) {
   const width = 180;
   const height = 115;
 
@@ -2021,10 +2040,12 @@ function drawSparkline(svg, data, cardIndex = 0) {
     .map(d => d[currentMetric])
     .filter(Number.isFinite);
 
-  const yMax = d3.max(values) || 1;
+  const yMax = currentMetric === "casos_por_mil"
+    ? sharedRateMax
+    : d3.max(values);
 
   const y = d3.scaleLinear()
-    .domain([0, yMax])
+    .domain([0, yMax || 1])
     .nice()
     .range([height - margin.bottom, margin.top]);
 
