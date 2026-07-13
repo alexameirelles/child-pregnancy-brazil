@@ -899,7 +899,7 @@ footer a{
   </p>
 
   <p>
-    The most recent data from SINASC (Sistema de Informações Sobre Nascidos Vivos, <i>en: Brazil Live Birth Information System</i>), of the Ministry of Health, shows that births to girls aged 14 and younger accounted for approximately 5 per 1,000 live births in 2024, a considerable decrease from the past — twenty years earlier, that figure was <b>8.6</b>, when 26,276 cases were recorded. 
+    Data from SINASC (Sistema de Informações Sobre Nascidos Vivos, <i>en: Brazil Live Birth Information System</i>), of the Ministry of Health, shows that births to girls aged 14 and younger accounted for approximately 5 per 1,000 live births in 2024, a considerable decrease from the past — twenty years earlier, that figure was <b>8.6</b>, when 26,276 cases were recorded. 
   </p>
 <div class="chart-block">
   <div class="chart-header">
@@ -1402,9 +1402,7 @@ function drawLineChart(animate = true) {
     .attr("height", height - margin.top - margin.bottom)
     .attr("fill", "transparent")
     .style("pointer-events", "all")
-    .on("pointerenter", () => {
-      tooltip.style("display", null);
-    })
+    .on("pointerenter", pointermoved)
     .on("pointermove", pointermoved)
     .on("pointerleave", () => {
       tooltip.style("display", "none");
@@ -1417,6 +1415,8 @@ function drawLineChart(animate = true) {
     const selected = data[index];
 
     if (!selected) return;
+
+    tooltip.style("display", null);
 
     const pointX = x(selected.year);
     const pointY = y(selected.value);

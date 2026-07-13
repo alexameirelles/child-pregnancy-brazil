@@ -1,6 +1,6 @@
 # Births to Girls Aged 14 and Younger in Brazil
 
-URL: 
+URL: https://alexameirelles.github.io/child-pregnancy-brazil/
 
 *A data-driven investigation into births among girls aged 14 and younger
 in Brazil between 2004 and 2024.*
@@ -19,9 +19,7 @@ Using more than twenty years of microdata from Brazil's Live Birth Information S
 
 Unlike my previous project, where I used D3.js primarily for a line chart and bar charts, this project was designed as an opportunity to further develop my data visualization skills using "vanilla" D3. 
 
-Rather than focusing on a novel analytical approach, I intentionally chose a relatively straightforward analysis so I could devote more time to designing and implementing different types of interactive visualizations. The project combines a line chart, a choropleth map, a grid of small multiple line charts, and waffle charts, all built with D3.js.
-
-This project is intentionally data-driven. While the analysis reveals a deeply troubling reality, I believe the story would be stronger with interviews featuring girls, families, healthcare professionals, and child rights experts to provide context beyond the numbers. Due to the limited timeframe, this first version focuses exclusively on the data analysis.
+Rather than focusing on a novel analytical approach, I intentionally chose a relatively straightforward analysis and clean dataset so I could devote more time to designing and implementing different types of interactive visualizations. The project combines a line chart, a choropleth map, a grid of small multiple line charts, and waffle charts, all built with D3.js.
 
 For the visual design—particularly the color palette—I drew inspiration from *A Journey Through Infertility*, an interactive story by *The Pudding*: https://pudding.cool/2026/03/ivf/
 
@@ -38,7 +36,7 @@ Using Python and the basedosdados package, I executed two SQL queries against th
 
 - One to retrieve individual-level records for births to girls aged 14 and younger (2004–2024);
 
-- Another to retrieve the total number of live births by municipality and year, used to calculate rates per 1,000 live births.
+- Another to retrieve the total number of live births by state and year, used to calculate rates per 1,000 live births.
 
 Additional datasets include:
 
@@ -67,8 +65,7 @@ Instead, the work focused on exploratory data analysis and the calculation of de
 
 A broad set of variables, including age, race/color, marital status, education, geographic distribution, and birth trends, was examined. However, the final story highlights only those that best supported the project's central findings.
 
-Visualizations were built using D3.js, including an animated line chart,
-choropleth map, sparklines and waffle charts.
+Visualizations were built using D3.js, including an animated line chart, choropleth map, sparklines and waffle charts.
 
 ------------------------------------------------------------------------
 
@@ -79,7 +76,6 @@ choropleth map, sparklines and waffle charts.
 - Northern states consistently recorded the highest rates per 1,000 live births.
 - Nearly three-quarters of the girls who gave birth were registered as parda or black.
 - One in ten were recorded as married or living in a stable union.
-
 
 ------------------------------------------------------------------------
 
@@ -96,7 +92,7 @@ Throughout the project, I learned how to:
 - Create coordinated interactions between multiple visualizations;
 - Improve the accessibility of SVG graphics using ARIA attributes and keyboard navigation;
 
-The official documentation for D3 and Base dos Dados, and pandas were my primary references throughout the project. The official documentation for D3, Base dos Dados, and pandas served as my primary references throughout the project. AI-assisted explanations also played an important role in the development process, particularly while building the D3 visualizations, helping me understand unfamiliar concepts, troubleshoot bugs, and experiment with different implementation approaches.
+The official documentation for D3 and Base dos Dados, and pandas were my primary references throughout the project. AI-assisted explanations also played an important role in the development process, particularly while building the D3 visualizations, helping me understand unfamiliar concepts, troubleshoot bugs, and experiment with different implementation approaches.
 
 ------------------------------------------------------------------------
 
@@ -107,7 +103,7 @@ Given more time, I would like to:
 - Conduct interviews with healthcare professionals, child rights organizations, and girls affected by sexual violence to complement the quantitative analysis;
 - Expand the analysis with additional demographic and geographic indicators;
 - Continue improving the accessibility of the visualizations, particularly for screen readers;
-Refine the mobile experience with layouts specifically designed for smaller screens;
+- Refine the mobile experience with layouts specifically designed for smaller screens;
 - Add more interactive elements and richer transitions between the visualizations;
 - Update the analysis with 2025 data.
 
