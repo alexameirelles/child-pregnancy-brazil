@@ -241,6 +241,16 @@ body{
   letter-spacing:.01em;
 }
 
+.chart-last-point{
+  fill: var(--chart-under14);
+}
+
+.chart-last-value{
+  font-family: var(--chart-font);
+  font-size: 18px;
+  font-weight: 900;
+  fill: var(--cream);
+}
 
 .map-cta,
 .sparkline-cta{
@@ -1285,6 +1295,8 @@ function drawLineChart(animate = true) {
     .x(d => x(d.year))
     .y(d => y(d.value));
 
+  const last = data[data.length - 1];
+
   const tickValues = [
     2004,
     2008,
@@ -1366,6 +1378,35 @@ function drawLineChart(animate = true) {
       .transition()
       .delay((_, i) => 650 + i * 18)
       .duration(220)
+      .attr("opacity", 1);
+  }
+
+  svg.append("circle")
+  .attr("class", "chart-last-point")
+  .attr("cx", x(last.year))
+  .attr("cy", y(last.value))
+  .attr("r", 4)
+  .attr("opacity", animate ? 0 : 1);
+
+svg.append("text")
+  .attr("class", "chart-last-value")
+  .attr("x", x(last.year))
+  .attr("y", y(last.value) + 20)
+  .attr("text-anchor", "middle")
+  .attr("opacity", animate ? 0 : 1)
+  .text(last.value.toLocaleString("en-US"));
+
+  if (animate) {
+    svg.select(".chart-last-point")
+      .transition()
+      .delay(900)
+      .duration(250)
+      .attr("opacity", 1);
+
+    svg.select(".chart-last-value")
+      .transition()
+      .delay(900)
+      .duration(250)
       .attr("opacity", 1);
   }
 
