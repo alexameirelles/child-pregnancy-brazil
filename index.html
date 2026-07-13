@@ -1,0 +1,2480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12,007 girls gave birth in Brazil in 2024, even though they didn't have to</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital@0;1&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+<style>
+@font-face {
+  font-family: "Bodoni Moda";
+  src: url("fonts/Domine-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Bodoni Moda";
+  src: url("fonts/Domine-Italic-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+}
+
+:root{
+  --bg-black:#070708;
+  --cream:#f4f1ea;
+  --lavender:#c6b7ea;
+  --rose:#f0c9cf;
+  --navy:#2c3163;
+  --text-gray:rgb(89,89,89);
+  --chart-under14:#f0708a;
+  --chart-region-bar:#f0708a;
+  --chart-axis-text:#f4f1ea;
+  --chart-axis-line:#f4f1ea14;
+  --chart-label:#f4f1ea;
+  --chart-value:#f4f1ea;
+  --chart-font:"Source Serif 4", Georgia, serif;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:"Source Serif 4", Georgia, serif;
+  background:#070708;
+}
+
+/* ── HERO ── */
+#hero{
+  position:relative;
+  width:100%;
+  min-height:100vh;
+  background:var(--bg-black);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  overflow:hidden;
+  padding:0 6%;
+}
+
+#hero-content{
+  position:relative;
+  z-index:2;
+  max-width:980px;
+}
+
+#hero h1{
+  font-family:"Bodoni Moda", Georgia, serif;
+  font-weight:500;
+  color:var(--cream);
+  font-size:clamp(2rem,4.8vw,4rem);
+  line-height:1.05;
+  letter-spacing:-0.035em;
+
+  max-width:750px;
+  margin:0 auto;
+}
+
+#counter{
+  font-family:"Bodoni Moda", Georgia, serif;
+  font-size:clamp(5.5rem,16vw,13rem);
+  font-weight:700;
+  line-height:.85;
+  color:var(--lavender);
+  letter-spacing:-0.06em;
+  margin-bottom:1.4rem;
+}
+
+
+#hero .byline{
+  margin-top:2rem;
+  color:var(--lavender);
+  font-size:1rem;
+  font-style:italic;
+  letter-spacing:.02em;
+}
+
+/* ── BODY ── */
+#body-text{
+  max-width:850px;
+  margin:0 auto;
+  padding:7rem 6% 4rem;
+  color:#f4f1ea;
+}
+
+#body-text p{
+  font-size:1.15rem;
+  line-height:1.85;
+  margin-bottom:1.6rem;
+}
+
+#body-text .intro::first-letter{
+  font-size:4.6rem;
+  line-height:.7;
+  font-weight:700;
+  float:left;
+  margin-right:10px;
+  margin-top:8px;
+  font-family:"Bodoni Moda", Georgia, serif;
+  color:#f4f1ea;
+}
+
+#body-text h2{
+  font-family:"Bodoni Moda", Georgia, serif;
+  font-size:1.7rem;
+  color:var(--cream);
+  margin:3rem 0 1.2rem;
+}
+
+#body-text blockquote{
+  font-style:italic;
+  border-left:3px solid var(--navy);
+  padding-left:1.2rem;
+  margin:1.5rem 0;
+  color:var(--cream);
+}
+
+.state{
+  stroke:#ffffff;
+  stroke-width:1;
+  cursor:pointer;
+  transition:
+    opacity .2s ease,
+    stroke-width .2s ease,
+    stroke-opacity .2s ease,
+    filter .2s ease;
+}
+
+.state.is-muted{
+  opacity:.35;
+}
+
+.state.is-highlighted{
+  opacity:1;
+  stroke:#ffffff;
+  stroke-width:2.2px;
+  stroke-opacity:1;
+  filter:drop-shadow(0 0 7px rgba(240,112,138,.95));
+}
+
+.state:focus{
+  outline:none;
+  stroke:#ffffff;
+  stroke-width:3px;
+  stroke-opacity:1;
+  filter:drop-shadow(0 0 7px rgba(240,112,138,.95));
+}
+
+.sparkline-card:focus{
+  outline:2px solid var(--cream);
+  outline-offset:3px;
+  background:rgba(244,241,234,.06);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,
+  *::before,
+  *::after{
+    scroll-behavior:auto !important;
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
+
+/* ── CHARTS ── */
+
+#line-chart,
+#map{
+  display:block;
+  width:100%;
+  height:auto;
+  overflow:visible;
+}
+
+.chart-block{
+  margin:3rem 0;
+}
+
+.chart-header{
+  margin-bottom:1rem;
+}
+
+.chart-header h3{
+  font-family:"Bodoni Moda", Georgia, serif;
+  font-size:1.45rem;
+  font-weight:600;
+  line-height:1.2;
+  color:var(--cream);
+}
+
+.chart-header p{
+  margin:.3rem 0 0;
+  font-family:var(--chart-font);
+  font-size:.85rem !important;
+  line-height:1.3 !important;
+  color:var(--chart-axis-text);
+}
+
+.chart-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  margin-top:.55rem !important;
+  margin-bottom:0 !important;
+  font-family:var(--chart-font);
+  font-size:.84rem !important;
+  line-height:1.35 !important;
+  color:rgba(244,241,234,.68) !important;
+  font-style:italic;
+  letter-spacing:.01em;
+}
+
+
+.map-cta,
+.sparkline-cta{
+  margin-top:.45rem !important;
+  margin-bottom:.15rem !important;
+}
+
+.map-cta{
+  width:94%;
+  justify-self:start;
+}
+
+.chart-toggle{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:0;
+  width:fit-content;
+  margin:0 auto 16px;
+  background:rgba(0,0,0,.05);
+  border-radius:999px;
+  padding:4px;
+}
+
+.chart-toggle button{
+  border:none;
+  background:transparent;
+  padding:11px 22px;
+  border-radius:999px;
+  font-family:"Source Serif 4", Georgia, serif;
+  font-size:15px;
+  font-weight:600;
+  color:rgba(244,241,234,.58);
+  cursor:pointer;
+  transition:.25s;
+  white-space:nowrap;
+}
+
+.chart-toggle button.active{
+  background:var(--cream);
+  color:#222;
+  box-shadow:0 2px 10px rgba(0,0,0,.24);
+}
+
+.chart-note{
+  font-size:.8rem;
+  color:#999;
+  text-align:start;
+  margin-top:.4rem;
+}
+
+#line-chart{
+  display:block;
+  width:100%;
+  height:auto;
+  overflow:visible;
+}
+
+.chart-line{
+  fill:none;
+  stroke-width:4px;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+
+.chart-line.under14{
+  stroke:var(--chart-under14);
+}
+
+.chart-dot{
+  r:4px;
+  pointer-events:none;
+}
+
+
+.chart-dot.under14{
+  fill:var(--chart-under14);
+}
+
+.chart-axis text{
+  font-family:var(--chart-font);
+  font-size:13px;
+  fill:var(--chart-axis-text);
+}
+
+.chart-axis line{
+  stroke:var(--chart-axis-line);
+}
+
+.chart-axis .domain{
+  display:none;
+}
+
+.tooltip-focus{
+  fill:var(--cream);
+  stroke-width:2.5px;
+  pointer-events:none;
+}
+
+.tooltip-focus.under14{
+  stroke:var(--chart-under14);
+}
+
+.tooltip-guide{
+  stroke:rgba(0,0,0,.22);
+  stroke-width:1px;
+  stroke-dasharray:4 4;
+  pointer-events:none;
+}
+
+.tooltip-box{
+  fill:#fff;
+  stroke:rgba(0,0,0,.18);
+  rx:5px;
+  ry:5px;
+  filter:drop-shadow(0 2px 5px rgba(0,0,0,.12));
+  pointer-events:none;
+}
+
+.tooltip-pointer{
+  fill:#fff;
+  stroke:none;
+  pointer-events:none;
+}
+
+.tooltip-year,
+.tooltip-value{
+  font-family:var(--chart-font);
+  fill:#222;
+  pointer-events:none;
+}
+
+.tooltip-year{
+  font-size:13px;
+  font-weight:700;
+}
+
+.tooltip-value{
+  font-size:14px;
+  font-weight:700;
+}
+
+.dashboard-chart{
+  width:min(1500px, calc(100vw - 48px));
+  height:100vh;
+  height:100svh;
+  margin:0 0 0 50%;
+  padding:18px 0 14px;
+  transform:translateX(-50%);
+
+  display:grid;
+  grid-template-rows:auto minmax(0, 1fr);
+  row-gap:8px;
+  overflow:hidden;
+}
+
+.dashboard-chart .chart-header{
+  margin-bottom:-2px;
+}
+
+.dashboard-chart .chart-header h3{
+  font-size:clamp(1.55rem, 2vw, 2.15rem);
+}
+
+.dashboard-chart .chart-header p{
+  margin-top:.2rem;
+  margin-bottom:0;
+}
+
+
+
+.state-dashboard{
+  display:grid;
+  grid-template-columns:minmax(0, 1.04fr) minmax(560px, .96fr);
+  gap:.9rem;
+  align-items:stretch;
+  min-height:0;
+  height:100%;
+}
+
+.map-panel,
+.sparklines-panel{
+  min-width:0;
+  height:100%;
+}
+
+.map-panel{
+  display:grid;
+  grid-template-rows:auto auto minmax(0, 1fr) auto;
+  align-items:stretch;
+  justify-items:start;
+  min-height:0;
+  padding:0 20px 4px;
+}
+
+.map-controls{
+  width:94%;
+  display:flex;
+  justify-content:flex-start;
+  margin:0;
+}
+
+.map-controls .chart-toggle{
+  margin:0;
+  padding:0;
+  gap:.45rem;
+  background:transparent;
+  border:none;
+}
+
+.map-controls .chart-toggle button{
+  border:1px solid rgba(244,241,234,.25);
+  background:transparent;
+  color:rgba(244,241,234,.7);
+  padding:.55rem .9rem;
+  border-radius:999px;
+  font-family:var(--chart-font);
+  font-size:.85rem;
+  font-weight:400;
+  box-shadow:none;
+}
+
+.map-controls .chart-toggle button:hover{
+  color:var(--cream);
+  border-color:rgba(244,241,234,.55);
+}
+
+.map-controls .chart-toggle button.active{
+  background:var(--cream);
+  color:#222;
+  border-color:var(--cream);
+  box-shadow:none;
+}
+
+.map-panel #map{
+  display:block;
+  width:92%;
+  height:100%;
+  justify-self:center;
+  overflow:visible;
+}
+
+.map-source{
+  width:92%;
+  margin-top:2px;
+  padding-top:0;
+  align-self:end;
+  justify-self:center;
+}
+
+.sparklines-panel{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  padding:0 10px 0 0;
+}
+
+.region-toggle{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+  margin:0;
+}
+
+.region-toggle button{
+  border:1px solid rgba(244,241,234,.25);
+  background:transparent;
+  color:rgba(244,241,234,.7);
+  padding:.55rem .9rem;
+  border-radius:999px;
+  font-family:var(--chart-font);
+  font-size:.85rem;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.region-toggle button:hover{
+  color:var(--cream);
+  border-color:rgba(244,241,234,.55);
+}
+
+.region-toggle button.active{
+  background:var(--cream);
+  color:#222;
+  border-color:var(--cream);
+}
+
+#region-grid{
+  flex:1;
+  min-height:0;
+  display:flex;
+  align-items:flex-start;
+  overflow:hidden;
+  padding-top:12px;
+}
+
+.region-group{
+  width:100%;
+  align-self:flex-start;
+}
+
+.region-group h4{
+  font-family:"Bodoni Moda", Georgia, serif;
+  font-size:1.35rem;
+  font-weight:600;
+  color:var(--cream);
+  margin-bottom:.7rem;
+}
+
+.sparkline-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(165px, 1fr));
+  gap:.85rem 1.25rem;
+}
+
+.sparkline-card{
+  min-width:0;
+  border-radius:8px;
+  padding:5px;
+  transition:background .2s ease;
+}
+
+.sparkline-card:hover{
+  background:rgba(244,241,234,.06);
+}
+
+.sparkline-card-header{
+  display:flex;
+  align-items:baseline;
+  margin-bottom:.25rem;
+}
+
+.sparkline-card-header strong{
+  font-family:var(--chart-font);
+  font-size:1rem;
+  color:var(--cream);
+}
+
+.sparkline-card-header span{
+  font-family:var(--chart-font);
+  font-size:.9rem;
+  color:var(--cream);
+}
+
+.sparkline-card svg{
+  display:block;
+  width:100%;
+  height:auto;
+  overflow:visible;
+}
+
+.sparkline-axis text{
+  font-family:var(--chart-font);
+  font-size:9px;
+  fill:var(--chart-axis-text);
+}
+
+.sparkline-axis line{
+  stroke:var(--chart-axis-line);
+}
+
+.sparkline-axis .domain{
+  display:none;
+}
+
+.sparkline-line{
+  fill:none;
+  stroke:var(--chart-under14);
+  stroke-width:2.2px;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.sparkline-last-point{
+  fill:var(--chart-under14);
+}
+
+.sparkline-last-value{
+  font-family:var(--chart-font);
+  font-size:10px;
+  font-weight:700;
+  fill:var(--cream);
+  pointer-events:none;
+}
+
+
+/* ── 2024 PROFILE DASHBOARD ── */
+
+.profile-dashboard{
+  width:min(1400px, calc(100vw - 48px));
+  margin:3.5rem 0 4rem 50%;
+  transform:translateX(-50%);
+}
+
+.profile-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:2rem;
+  align-items:stretch;
+}
+
+.profile-card{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  padding:1.25rem 1.25rem 1rem;
+  border:1px solid rgba(244,241,234,.12);
+  border-radius:14px;
+  background:rgba(244,241,234,.025);
+}
+
+.profile-card-header{
+  margin-bottom:.8rem;
+}
+
+.profile-card-header h3{
+  font-family:"Bodoni Moda", Georgia, serif;
+  font-size:1.25rem;
+  font-weight:600;
+  color:var(--cream);
+}
+
+.profile-card-header p{
+  margin:.2rem 0 0 !important;
+  font-family:var(--chart-font);
+  font-size:.8rem !important;
+  line-height:1.3 !important;
+  color:rgba(244,241,234,.62);
+}
+
+.profile-highlight{
+  min-height:92px;
+  margin-bottom:.65rem;
+}
+
+.profile-highlight strong{
+  display:block;
+  font-family:"Bodoni Moda", Georgia, serif;
+  font-size:clamp(2.1rem, 3vw, 3rem);
+  line-height:1;
+  color:var(--lavender);
+}
+
+.profile-highlight span{
+  display:block;
+  font-size:1rem;
+  line-height:1.35;
+  white-space:nowrap;
+}
+
+.profile-card svg{
+  display:block;
+  width:100%;
+  height:auto;
+  overflow:visible;
+}
+
+/* ── WAFFLE CHARTS ── */
+
+.waffle-square{
+  stroke:var(--bg-black);
+  stroke-width:1.5px;
+}
+
+.waffle-legend{
+  font-family:var(--chart-font);
+  font-size:12px;
+  fill:var(--cream);
+}
+
+.waffle-legend-value{
+  font-weight:700;
+}
+
+.waffle-caption{
+  font-family:var(--chart-font);
+  font-size:11px;
+  fill:rgba(244,241,234,.65);
+}
+
+.profile-note{
+  margin-top:.65rem;
+  font-family:var(--chart-font);
+  font-size:.75rem;
+  line-height:1.5;
+  color:#999;
+}
+
+.profile-note strong{
+  color:rgba(244,241,234,.78);
+}
+
+.race-note{
+  max-width:100%;
+}
+
+.profile-source{
+  margin-top:.45rem;
+  font-family:var(--chart-font);
+  font-size:.72rem;
+  line-height:1.4;
+  color:rgba(244,241,234,.5);
+}
+
+@media (max-width:1050px){
+  .profile-grid{
+    grid-template-columns:1fr;
+  }
+
+  .profile-card{
+    max-width:700px;
+    width:100%;
+    margin:0 auto;
+  }
+}
+
+@media (max-width:650px){
+  .profile-dashboard{
+    width:calc(100vw - 24px);
+  }
+}
+
+@media (max-width:1100px){
+  .dashboard-chart{
+    width:min(1000px, calc(100vw - 32px));
+    height:auto;
+    min-height:0;
+    padding:18px 0;
+    overflow:visible;
+    grid-template-rows:auto;
+  }
+
+  .state-dashboard{
+    grid-template-columns:1fr;
+    height:auto;
+    min-height:0;
+  }
+
+  .map-panel{
+    height:75vh;
+    min-height:550px;
+    padding:10px 16px 6px;
+  }
+
+  .map-controls,
+  .map-panel #map,
+  .map-source{
+    width:92%;
+  }
+
+  .sparkline-grid{
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+  }
+
+  #region-grid{
+    align-items:flex-start;
+  }
+}
+
+@media (max-width:650px){
+  .dashboard-chart{
+    width:calc(100vw - 24px);
+  }
+
+  .map-panel{
+    height:60vh;
+    min-height:420px;
+  }
+
+  .map-controls,
+  .map-panel #map,
+  .map-source{
+    width:96%;
+  }
+
+  .region-toggle{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    padding-bottom:.4rem;
+  }
+
+  .region-toggle button{
+    flex:0 0 auto;
+  }
+
+  .sparkline-grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+}
+
+footer{
+  text-align:center;
+  padding:3rem 5%;
+  font-family:Georgia, serif;
+  font-size:.95rem;
+  color:rgb(89,89,89);
+}
+
+footer a{
+  color:var(--navy);
+  text-decoration:none;
+}
+
+@media (max-width:768px){
+  #counter{
+    font-size:clamp(4.6rem,24vw,8rem);
+  }
+
+  #hero h1{
+    font-size:clamp(2rem,11vw,3.4rem);
+  }
+
+  #body-text{
+    padding:4rem 6% 3rem;
+  }
+
+  #body-text p{
+    font-size:1rem;
+  }
+
+  .chart-toggle{
+    width:100%;
+  }
+
+  .chart-toggle button{
+    flex:1 1 auto;
+    padding:8px 11px;
+    font-size:12px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<section id="hero">
+  <div id="hero-content">
+    <div id="counter">0</div>
+
+    <h1>
+      babies were born to girls aged 14 and younger in Brazil in 2024
+    </h1>
+
+    <div class="byline">By Alexa Meirelles | July 2026</div>
+  </div>
+</section>
+
+<section id="body-text">
+  <p class="intro">
+    In Brazil, every girl under the age of 14 who becomes pregnant is legally entitled to an abortion. Yet in 2024, 12,007 babies were born to mothers in this age group, an average of nearly <strong>33 births</strong> every day.
+  </p>
+
+  <p>
+    Even though abortion is a criminal offense in Brazil, their situation fits within one of the three exceptions: the pregnancy results from rape. Under the country's law, any sexual act involving a person under the age of 14 is legally classified as statutory rape, regardless of whether the victim claims there was consent.
+  </p>
+
+  <p>
+    The most recent data from SINASC (Sistema de Informações Sobre Nascidos Vivos, <i>en: Brazil Live Birth Information System</i>), of the Ministry of Health, shows that births to girls aged 14 and younger accounted for approximately 5 per 1,000 live births in 2024, a considerable decrease from the past — twenty years earlier, that figure was <b>8.6</b>, when 26,276 cases were recorded. 
+  </p>
+<div class="chart-block">
+  <div class="chart-header">
+    <h3>Number of live births to girls aged 14 and younger</h3>
+    <p>In thousands, 2004–2024</p>
+    <p class="chart-cta">Hover over the line to see the data</p>
+  </div>
+
+  <svg
+    id="line-chart"
+    role="img"
+    aria-labelledby="line-chart-title line-chart-desc"
+  >
+    <title id="line-chart-title">Live births to girls aged 14 and younger, 2004–2024</title>
+    <desc id="line-chart-desc">The number declined from 26,276 live births in 2004 to 12,007 in 2024.</desc>
+  </svg>
+
+  <div class="chart-note">
+    Source: SINASC, Brazilian Ministry of Health.
+  </div>
+</div>
+
+  <h2>A nationwide picture</h2>
+
+  <p>
+    São Paulo recorded the largest absolute number of births to girls aged 14 and younger in 2024, about 1,216. This is unsurprising given that it is Brazil's most populous state, with roughly 46 million residents according to the 2022 national census.
+  </p>
+
+    <p>
+    However, when the figures are adjusted per 1,000 live births, a different pattern emerges. The highest rates are concentrated in Brazil's Northern region, led by Acre (<b>13.3</b>), Amazonas (<b>12.3</b>), Roraima (<b>11.9</b>), Amapá (<b>11.6</b>), and Maranhão (<b>10.2</b>, this last one is in the Northeast region). For comparison, the states with the lowest rates is Santa Catarina (<b>2.1</b>), in the South region.
+  </p>
+
+  <div class="chart-block dashboard-chart">
+  <div class="chart-header">
+    <h3>Births to girls aged 14 and younger by state</h3>
+    <p id="map-subtitle">Total cases, 2024</p>
+  </div>
+
+  <div class="state-dashboard">
+    <div class="map-panel">
+      <div class="map-controls">
+        <div class="chart-toggle" id="map-toggle">
+          <button type="button" data-metric="total_casos" class="active">
+            Total cases
+          </button>
+
+          <button type="button" data-metric="casos_por_mil">
+            Per 1,000 live births
+          </button>
+        </div>
+      </div>
+
+      <p class="chart-cta map-cta">
+        Hover over or focus on a state to see the data
+      </p>
+
+      <svg
+        id="map"
+        role="img"
+        aria-labelledby="map-title map-desc"
+      >
+        <title id="map-title">Live births to girls aged 14 and younger by state</title>
+        <desc id="map-desc">Use the metric buttons and keyboard focus on each state to explore total cases and rates per 1,000 live births in 2024.</desc>
+      </svg>
+
+      <div class="chart-note map-source">
+        Source: SINASC, Brazilian Ministry of Health.
+      </div>
+    </div>
+
+    <div class="sparklines-panel">
+      <div class="region-toggle" id="region-toggle">
+        <button type="button" data-region="North" class="active">North</button>
+        <button type="button" data-region="Northeast">Northeast</button>
+        <button type="button" data-region="Central-West">Central-West</button>
+        <button type="button" data-region="Southeast">Southeast</button>
+        <button type="button" data-region="South">South</button>
+      </div>
+
+      <p class="chart-cta sparkline-cta">
+        Hover over or focus on a chart to highlight the state
+      </p>
+
+      <div id="region-grid"></div>
+    </div>
+  </div>
+</div>
+
+  <h2>Who are these girls?</h2>
+
+ <p>
+  The records also offer a snapshot of the girls who gave birth in 2024. The vast majority were 13 or 14 years old, accounting for 96.3% of the records. The youngest age recorded in the data was eight, with three births recorded among girls that young.
+</p>
+  <p>
+  Most were registered as single (87.6%), as expected, but at least one in ten (11.3%) were recorded as married or living in a stable union. In Brazil, people can marry without parental consent from the age of 18, when they reach legal adulthood, or from the age of 16 with the authorization of their parents or legal guardians. Marital status was not recorded in 0.4% of the cases.
+</p>
+<p>
+  About 68.1% were registered as <i>Parda</i>, while 6.3% were registered as Black. Together, these groups accounted for 74.4% of the records. White girls represented 16.9%, Indigenous girls 6.5%, and 0.3% were identified as Asian. Race/color was not recorded in 2% of cases.
+</p>
+<div class="profile-dashboard">
+  <div class="profile-grid">
+
+    <article class="profile-card">
+      <div class="profile-card-header">
+        <h3>Age, 2024</h3>
+      </div>
+
+      <div class="profile-highlight">
+        <strong>96.3%</strong>
+        <span>were 13 or 14 years old</span>
+      </div>
+
+      <svg
+        id="age-chart"
+        role="img"
+        aria-labelledby="age-chart-title age-chart-desc"
+      >
+        <title id="age-chart-title">Live births by age in 2024</title>
+        <desc id="age-chart-desc">A waffle chart showing that 95.5% of the girls were 13 or 14 years old.</desc>
+      </svg>
+
+      <div class="profile-source">
+        Source: SINASC, Brazilian Ministry of Health.
+      </div>
+    </article>
+
+    <article class="profile-card">
+      <div class="profile-card-header">
+        <h3>Race/color, 2024</h3>
+      </div>
+
+      <div class="profile-highlight">
+        <strong>74.4%</strong>
+        <span>were registered as Black or <i>parda</i></span>
+      </div>
+
+      <svg
+        id="race-chart"
+        role="img"
+        aria-labelledby="race-chart-title race-chart-desc"
+      >
+        <title id="race-chart-title">Recorded race or color in 2024</title>
+        <desc id="race-chart-desc">A waffle chart showing that 74.4% were registered as Black or parda, 16.9% as White, and 8.7% as Indigenous, Asian, or not recorded.</desc>
+      </svg>
+
+      <div class="profile-note race-note">
+        <strong>Note:</strong> Race/color categories follow the Brazilian
+        Institute of Geography and Statistics (IBGE) classification - 
+        White (<i>branca</i>), Black (<i>preta</i>), <i>Parda</i>,
+        Asian (<i>amarela</i>), and Indigenous (<i>indígena</i>).
+        <i>Parda</i> is the official Brazilian census category broadly
+        referring to people of mixed racial ancestry. In Brazil,
+        <i>pretos</i> and <i>pardos</i> are often collectively referred
+        to as <i>negros</i>.
+      </div>
+
+      <div class="profile-source">
+        Source: SINASC, Brazilian Ministry of Health.
+      </div>
+    </article>
+
+    <article class="profile-card">
+      <div class="profile-card-header">
+        <h3>Marital status, 2024</h3>
+      </div>
+
+      <div class="profile-highlight">
+        <strong>87.6%</strong>
+        <span>were registered as single</span>
+      </div>
+
+      <svg
+        id="marital-chart"
+        role="img"
+        aria-labelledby="marital-chart-title marital-chart-desc"
+      >
+        <title id="marital-chart-title">Recorded marital status in 2024</title>
+        <desc id="marital-chart-desc">A waffle chart showing that 89% were registered as single.</desc>
+      </svg>
+
+      <div class="profile-note">
+        <strong>Note:</strong> Other/not registered includes 80 records
+        classified as other categories () and 48 records with no information.
+      </div>
+
+      <div class="profile-source">
+        Source: SINASC, Brazilian Ministry of Health.
+      </div>
+    </article>
+
+  </div>
+</div>
+
+  <h2>The legal right to abortion at risk</h2>
+
+<p>
+  In early June, Brazil's Federal Senate approved a Legislative Decree Bill (PDL) suspending Conanda's (Conselho Nacional dos Direitos da Criança e do Adolescente, <i>en: Brazil's National Council for the Rights of Children and Adolescents</i>) Resolution No. 258, issued in 2024. The resolution established national guidelines for assisting children and adolescents who become pregnant as a result of rape, including access to legal abortion.
+</p>
+
+<p>
+  The bill, introduced by federal congresswoman Chris Tonietto (PL–Rio de Janeiro), had already been approved by the Chamber of Deputies in November 2025. Its supporters argued that Conanda had exceeded its authority by regulating matters that should be decided by the country's Congress.
+</p>
+
+<p>
+  The resolution instructed healthcare and child protection professionals on how to assist victims of sexual violence while reducing the risk of revictimization. It also reaffirmed that access to legal abortion in cases of rape does not require a police report or prior judicial authorization.
+</p>
+
+<p>
+  Suspending the resolution does not change Brazil's abortion law, but child rights organizations argue that removing these guidelines could make it harder for victims to receive timely care and protection.
+</p>
+
+<p>
+  After the bill was approved by the Chamber of Deputies, the Ministry of Women issued a statement warning that forced pregnancy is the leading cause of girls dropping out of school and results in the death of one girl every week in Brazil.
+</p>
+
+<blockquote>
+  “Conanda's resolution, developed with the participation of civil society, neither exceeds the council's authority nor creates new rights. It simply explains how existing law should be applied to save lives. Suspending this measure means turning a blind eye to violence and failing Brazilian girls.”
+</blockquote>
+
+</section>
+
+<footer>
+  <p>
+    You can find more about the methodology and the code for this project on GitHub:
+    <a href="#" style="color: #f0708a;">github.com/alexameirelles</a>
+  </p>
+</footer>
+
+<script>
+
+/* ─────────────────────────────────────────────
+   GLOBAL STATE AND DATA
+───────────────────────────────────────────── */
+/* Global state */
+
+let geojson;
+let stateData;
+let currentMetric = "total_casos";
+let currentRegion = "North";
+
+/* Data */
+
+const dataUnder14 = [
+  { year: 2004, value: 26276 },
+  { year: 2005, value: 26990 },
+  { year: 2006, value: 27610 },
+  { year: 2007, value: 27963 },
+  { year: 2008, value: 28677 },
+  { year: 2009, value: 27807 },
+  { year: 2010, value: 27048 },
+  { year: 2011, value: 27786 },
+  { year: 2012, value: 28237 },
+  { year: 2013, value: 27987 },
+  { year: 2014, value: 28243 },
+  { year: 2015, value: 26699 },
+  { year: 2016, value: 24138 },
+  { year: 2017, value: 22145 },
+  { year: 2018, value: 21171 },
+  { year: 2019, value: 19330 },
+  { year: 2020, value: 17579 },
+  { year: 2021, value: 17458 },
+  { year: 2022, value: 14266 },
+  { year: 2023, value: 13941 },
+  { year: 2024, value: 12007 }
+];
+
+/* 2024 profile data */
+
+const dataAge = [
+  { category: "14 years old", value: 9183 },
+  { category: "13 years old", value: 2385 },
+  { category: "Ages 8–12", value: 439 }
+];
+
+const dataRace = [
+  { category: "Black or parda", value: 8932 },
+  { category: "White", value: 2028 },
+  { category: "Other/Not registered", value: 1047 }
+];
+
+const dataMaritalStatus = [
+  { category: "Single", value: 10517 },
+  { category: "Married or stable union", value: 1362 },
+  { category: "Other/Not registered", value: 128 }
+];
+
+/* Years */
+
+const years = dataUnder14.map(d => d.year);
+
+/* Regions */
+
+const regions = {
+  "North":["AC", "AM", "AP", "PA", "RO", "RR", "TO"],
+
+  "Northeast":["AL", "BA", "CE", "MA", "PB", "PE", "PI", "RN", "SE"],
+
+  "Central-West":["DF", "GO", "MS", "MT"],
+
+  "Southeast":["ES", "MG", "RJ", "SP"],
+
+  "South":["PR", "RS", "SC"]
+};
+
+/* ─────────────────────────────────────────────
+   TICKER
+───────────────────────────────────────────── */
+function animateCounter() {
+  const counter = d3.select("#counter");
+
+  counter
+    .interrupt()
+    .text("0")
+    .transition()
+    .duration(2000)
+    .ease(d3.easeCubicOut)
+    .tween("text", () => {
+      const interpolate = d3.interpolateNumber(0, 12007);
+
+      return t => {
+        counter.text(
+          Math.round(interpolate(t)).toLocaleString("en-US")
+        );
+      };
+    });
+}
+
+/* Line chart*/
+
+function drawLineChart(animate = true) {
+  const data = dataUnder14;
+  const seriesKey = "under14";
+
+  const width = 760;
+  const height = 530;
+  const margin = {
+    top:30,
+    right:34,
+    bottom:48,
+    left:78
+  };
+
+  const svg = d3.select("#line-chart")
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
+
+  svg.selectAll("*").remove();
+
+  svg.append("title")
+    .attr("id", "line-chart-title")
+    .text("Live births to girls aged 14 and younger, 2004–2024");
+
+  svg.append("desc")
+    .attr("id", "line-chart-desc")
+    .text("The number declined from 26,276 live births in 2004 to 12,007 in 2024.");
+
+  /*
+    scaleLinear allows x.invert(), which is needed to determine
+    the year corresponding to the cursor's horizontal position.
+  */
+
+  const x = d3.scaleLinear()
+    .domain(d3.extent(data, d => d.year))
+    .range([margin.left, width - margin.right]);
+
+  const y = d3.scaleLinear()
+    .domain([0, d3.max(data, d => d.value)])
+    .nice()
+    .range([height - margin.bottom, margin.top]);
+
+  const line = d3.line()
+    .x(d => x(d.year))
+    .y(d => y(d.value));
+
+  const tickValues = [
+    2004,
+    2008,
+    2012,
+    2016,
+    2020,
+    2024
+  ];
+
+  /* X-axis */
+  svg.append("g")
+    .attr("class", "chart-axis")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(
+      d3.axisBottom(x)
+        .tickValues(tickValues)
+        .tickFormat(d3.format("d"))
+        .tickSizeOuter(0)
+    )
+    .call(g => g.selectAll(".tick text")
+      .attr("dy", "1.2em")
+    );
+
+  /* Y-axis and horizontal grid */
+  const yAxis = svg.append("g")
+    .attr("class", "chart-axis")
+    .attr("transform", `translate(${margin.left},0)`)
+    .call(
+      d3.axisLeft(y)
+        .ticks(5)
+        .tickFormat(d => {
+          const value = d / 1000;
+          return Number.isInteger(value)
+            ? value
+            : d3.format(".1f")(value);
+        })
+        .tickSizeOuter(0)
+    );
+
+  yAxis.selectAll(".tick text")
+    .attr("dx", "-0.5em");
+
+  yAxis.select(".domain").remove();
+
+  yAxis.selectAll(".tick line")
+    .clone()
+    .attr("x2", width - margin.left - margin.right)
+    .attr("stroke", "var(--chart-axis-line)");
+
+  /* Line */
+  const linePath = svg.append("path")
+    .datum(data)
+    .attr("class", `chart-line ${seriesKey}`)
+    .attr("d", line);
+
+  if (animate) {
+    const totalLength = linePath.node().getTotalLength();
+
+    linePath
+      .attr("stroke-dasharray", totalLength)
+      .attr("stroke-dashoffset", totalLength)
+      .transition()
+      .duration(900)
+      .ease(d3.easeCubicOut)
+      .attr("stroke-dashoffset", 0);
+  }
+
+  /* Points */
+  const dots = svg.selectAll(".chart-dot")
+    .data(data)
+    .join("circle")
+    .attr("class", `chart-dot ${seriesKey}`)
+    .attr("cx", d => x(d.year))
+    .attr("cy", d => y(d.value));
+
+  if (animate) {
+    dots
+      .attr("opacity", 0)
+      .transition()
+      .delay((_, i) => 650 + i * 18)
+      .duration(220)
+      .attr("opacity", 1);
+  }
+
+  /*
+    Tooltip: vertical guide, focus circle, and text box.
+    All elements start hidden.
+  */
+  const tooltip = svg.append("g")
+    .style("display", "none")
+    .style("pointer-events", "none");
+
+  const guide = tooltip.append("line")
+    .attr("class", "tooltip-guide")
+    .attr("y1", margin.top)
+    .attr("y2", height - margin.bottom);
+
+  const focus = tooltip.append("circle")
+    .attr("class", `tooltip-focus ${seriesKey}`)
+    .attr("r", 7);
+
+  const box = tooltip.append("rect")
+    .attr("class", "tooltip-box");
+
+  const pointer = tooltip.append("path")
+    .attr("class", "tooltip-pointer");
+
+  const yearText = tooltip.append("text")
+    .attr("class", "tooltip-year")
+    .attr("dominant-baseline", "hanging");
+
+  const valueText = tooltip.append("text")
+    .attr("class", "tooltip-value")
+    .attr("dominant-baseline", "hanging");
+
+  const bisect = d3.bisector(d => d.year).center;
+
+  /*
+    Invisible rectangle over the chart area.
+    It captures mouse, pen, and touch events without blocking the line.
+  */
+  svg.append("rect")
+    .attr("x", margin.left)
+    .attr("y", margin.top)
+    .attr("width", width - margin.left - margin.right)
+    .attr("height", height - margin.top - margin.bottom)
+    .attr("fill", "transparent")
+    .style("pointer-events", "all")
+    .on("pointerenter", () => {
+      tooltip.style("display", null);
+    })
+    .on("pointermove", pointermoved)
+    .on("pointerleave", () => {
+      tooltip.style("display", "none");
+    });
+
+  function pointermoved(event) {
+    const [pointerX] = d3.pointer(event, svg.node());
+    const hoveredYear = x.invert(pointerX);
+    const index = bisect(data, hoveredYear);
+    const selected = data[index];
+
+    if (!selected) return;
+
+    const pointX = x(selected.year);
+    const pointY = y(selected.value);
+
+    guide
+      .attr("x1", pointX)
+      .attr("x2", pointX);
+
+    focus
+      .attr("cx", pointX)
+      .attr("cy", pointY);
+
+    yearText.text(selected.year);
+    valueText.text(selected.value.toLocaleString("en-US"));
+
+    /*
+      Measures the labels and creates a compact tooltip box.
+      Because dominant-baseline is set to hanging, the text y-position
+      represents the top of the line, removing extra top spacing.
+    */
+
+    const yearBox = yearText.node().getBBox();
+    const valueBox = valueText.node().getBBox();
+
+    const paddingX = 10;
+    const paddingTop = 8;
+    const paddingBottom = 4;
+    const gap = 2;
+    const pointerSize = 6;
+    const pointerGap = 13;
+
+    const tooltipWidth =
+      Math.max(yearBox.width, valueBox.width) + paddingX * 2;
+
+    const tooltipHeight =
+      paddingTop +
+      yearBox.height +
+      gap +
+      valueBox.height +
+      paddingBottom;
+
+    /*
+      Places the box to the right of the point.
+      Near the right edge, it automatically moves to the left.
+    */
+    const showOnLeft =
+      pointX + tooltipWidth + pointerGap + 8 > width - margin.right;
+
+    const boxX = showOnLeft
+      ? pointX - tooltipWidth - pointerGap
+      : pointX + pointerGap;
+
+    let boxY = pointY - tooltipHeight / 2;
+
+    boxY = Math.max(
+      margin.top,
+      Math.min(boxY, height - margin.bottom - tooltipHeight)
+    );
+
+    box
+      .attr("x", boxX)
+      .attr("y", boxY)
+      .attr("width", tooltipWidth)
+      .attr("height", tooltipHeight);
+
+    /*
+      Draws the small pointer connecting the box to the point.
+    */
+
+    const pointerCenterY = Math.max(
+      boxY + pointerSize + 2,
+      Math.min(pointY, boxY + tooltipHeight - pointerSize - 2)
+    );
+
+    if (showOnLeft) {
+      const pointerBaseX = boxX + tooltipWidth - 1;
+
+      pointer.attr(
+        "d",
+        `M${pointerBaseX},${pointerCenterY - pointerSize}
+         L${pointX},${pointY}
+         L${pointerBaseX},${pointerCenterY + pointerSize}
+         Z`
+      );
+    } else {
+      const pointerBaseX = boxX + 1;
+
+      pointer.attr(
+        "d",
+        `M${pointerBaseX},${pointerCenterY - pointerSize}
+         L${pointX},${pointY}
+         L${pointerBaseX},${pointerCenterY + pointerSize}
+         Z`
+      );
+    }
+
+    yearText
+      .attr("x", boxX + paddingX)
+      .attr("y", boxY + paddingTop);
+
+    valueText
+      .attr("x", boxX + paddingX)
+      .attr(
+        "y",
+        boxY + paddingTop + yearBox.height + gap
+      );
+  }
+}
+
+/* Line chart animation */
+
+function observeLineChart() {
+  const chart = document.querySelector("#line-chart");
+
+  if (!chart) return;
+
+  if (!("IntersectionObserver" in window)) {
+    drawLineChart(true);
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    entries => {
+      const entry = entries[0];
+
+      if (!entry.isIntersecting) return;
+
+      drawLineChart(true);
+      observer.disconnect();
+    },
+    {
+      threshold:0.35
+    }
+  );
+
+  observer.observe(chart);
+}
+
+/* Map */
+
+function drawMap() {
+  clearMapHighlight();
+
+  const width = 760;
+  const height = 700;
+  const padding = 30;
+
+  const svg = d3.select("#map")
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
+
+  svg.selectAll("*").remove();
+
+  svg.append("title")
+    .attr("id", "map-title")
+    .text("Live births to girls aged 14 and younger by state");
+
+  svg.append("desc")
+    .attr("id", "map-desc")
+    .text("Use the metric buttons and keyboard focus on each state to explore total cases and rates per 1,000 live births in 2024.");
+
+  /* Fits the GeoJSON to the available SVG area. */
+  const projection = d3.geoIdentity()
+    .reflectY(true)
+    .fitExtent(
+      [
+        [padding, padding],
+        [width - padding, height - padding]
+      ],
+      geojson
+    );
+
+  const path = d3.geoPath(projection);
+
+  /* Uses only the 2024 data. */
+
+  const data2024 = stateData.filter(d => d.ano === 2024);
+
+  /* Creates a lookup between each state abbreviation and its full corresponding row in the CSV. */
+
+  const dataMap = new Map(
+    data2024.map(d => [d.sigla_uf, d])
+  );
+
+  const color = d3.scaleQuantile()
+    .domain(data2024.map(d => d[currentMetric]))
+    .range([
+      "#f6f2fb",
+      "#ebe2f6",
+      "#dac8ee",
+      "#c6b7ea",
+      "#d7a8d5",
+      "#e891b5",
+      "#f27b96",
+      "#f0708a"
+    ]);
+
+  /* States */
+
+  const states = svg.append("g")
+    .attr("class", "map-states")
+    .selectAll(".state")
+    .data(geojson.features)
+    .join("path")
+    .attr("class", "state")
+    .attr("data-uf", d => d.properties.SIGLA_UF)
+    .attr("tabindex", 0)
+    .attr("role", "img")
+    .attr("aria-label", d => {
+      const uf = d.properties.SIGLA_UF;
+      const row = dataMap.get(uf);
+
+      if (!row || !Number.isFinite(row[currentMetric])) {
+        return `${uf}: data unavailable`;
+      }
+
+      const value = currentMetric === "total_casos"
+        ? `${row[currentMetric].toLocaleString("en-US")} cases`
+        : `${row[currentMetric].toFixed(1)} cases per 1,000 live births`;
+
+      return `${uf}, ${row.ano}: ${value}`;
+    })
+    .attr("d", path)
+    .attr("fill", d => {
+      const uf = d.properties.SIGLA_UF;
+      const row = dataMap.get(uf);
+
+      return row && Number.isFinite(row[currentMetric])
+        ? color(row[currentMetric])
+        : "#333";
+    })
+    .attr("stroke", "#f4f1ea")
+    .attr("stroke-opacity", 0.35)
+    .attr("stroke-width", 0.8);
+
+  /* Map legend */
+
+  const legendColors = color.range();
+  const swatchWidth = 22;
+  const swatchGap = 2;
+  const swatchHeight = 10;
+
+  const legendWidth =
+    legendColors.length * (swatchWidth + swatchGap) - swatchGap;
+
+  const legend = svg.append("g")
+    .attr("class", "map-legend")
+    .attr(
+      "transform",
+      `translate(${width - padding - legendWidth}, ${padding})`
+    );
+
+  legend.append("text")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("fill", "#f4f1ea")
+    .attr("font-family", "Domine-Variable, Georgia, serif")
+    .attr("font-size", 16)
+    .attr("dominant-baseline", "hanging")
+    .text("Lower");
+
+  legend.append("text")
+    .attr("x", legendWidth)
+    .attr("y", 0)
+    .attr("text-anchor", "end")
+    .attr("fill", "#f4f1ea")
+    .attr("font-family", "Domine-Variable, Georgia, serif")
+    .attr("font-size", 16)
+    .attr("dominant-baseline", "hanging")
+    .text("Higher");
+
+  legend.selectAll("rect")
+    .data(legendColors)
+    .join("rect")
+    .attr("x", (_, i) => i * (swatchWidth + swatchGap))
+    .attr("y", 20)
+    .attr("width", swatchWidth)
+    .attr("height", swatchHeight)
+    .attr("rx", 2)
+    .attr("fill", d => d);
+
+  /* Map tooltip */
+
+  const tooltip = svg.append("g")
+    .attr("class", "map-tooltip-svg")
+    .style("display", "none")
+    .style("pointer-events", "none");
+
+  const tooltipBox = tooltip.append("rect")
+    .attr("fill", "#ffffff")
+    .attr("stroke", "rgba(0,0,0,.18)")
+    .attr("rx", 5)
+    .attr("ry", 5);
+
+  const tooltipPointer = tooltip.append("path")
+    .attr("fill", "#ffffff")
+    .attr("stroke", "none");
+
+  const tooltipText = tooltip.append("text")
+    .attr("font-family", "Source Serif 4, Georgia, serif")
+    .attr("font-size", 13)
+    .attr("fill", "#222")
+    .attr("dominant-baseline", "hanging");
+
+  const tooltipYear = tooltipText.append("tspan");
+
+  const tooltipValue = tooltipText.append("tspan")
+    .attr("font-family", "Source Serif 4, Georgia, serif")
+    .attr("font-weight", 700);
+
+  const tooltipSuffix = tooltipText.append("tspan");
+
+  /* Interaction */
+
+  states
+    .on("pointerenter", function(event, d) {
+      const uf = d.properties.SIGLA_UF;
+      const row = dataMap.get(uf);
+
+      if (!row) return;
+
+      d3.select(this)
+        .attr("stroke-opacity", 1)
+        .attr("stroke-width", 1.8);
+
+      tooltip.style("display", null);
+
+      updateTooltip(event, row);
+    })
+
+    .on("pointermove", function(event, d) {
+      const uf = d.properties.SIGLA_UF;
+      const row = dataMap.get(uf);
+
+      if (!row) return;
+
+      updateTooltip(event, row);
+    })
+
+    .on("pointerleave", function() {
+      d3.select(this)
+        .attr("stroke-opacity", 0.35)
+        .attr("stroke-width", 0.8);
+
+      tooltip.style("display", "none");
+    })
+    .on("focus", function(event, d) {
+      const uf = d.properties.SIGLA_UF;
+      const row = dataMap.get(uf);
+
+      if (!row || !Number.isFinite(row[currentMetric])) return;
+
+      d3.select(this)
+        .attr("stroke-opacity", 1)
+        .attr("stroke-width", 2.4);
+
+      highlightMapState(uf);
+    })
+    .on("blur", function() {
+      d3.select(this)
+        .attr("stroke-opacity", 0.35)
+        .attr("stroke-width", 0.8);
+
+      clearMapHighlight();
+      tooltip.style("display", "none");
+    });
+
+  function updateTooltip(event, row) {
+    tooltipYear.text(`${row.ano}: `);
+
+    tooltipValue.text(
+      currentMetric === "total_casos"
+      ? row[currentMetric].toLocaleString("en-US")
+      : row[currentMetric].toFixed(1)
+    );
+
+    tooltipSuffix.text(
+      currentMetric === "total_casos"
+      ? " cases"
+      : " cases per 1,000 births"
+  );
+
+    const textBox = tooltipText.node().getBBox();
+
+    const paddingX = 10;
+    const paddingTop = 8;
+    const paddingBottom = 4;
+    const pointerSize = 6;
+    const offset = 16;
+
+    const tooltipWidth =
+      textBox.width + paddingX * 2;
+
+    const tooltipHeight =
+      paddingTop + textBox.height + paddingBottom;
+
+    /*
+      Cursor coordinates inside the SVG.
+      This keeps the tooltip following the pointer while remaining inside the map.
+    */
+    const [mouseX, mouseY] = d3.pointer(event, svg.node());
+
+    const showOnLeft =
+      mouseX + tooltipWidth + offset > width - padding;
+
+    const boxX = showOnLeft
+      ? mouseX - tooltipWidth - offset
+      : mouseX + offset;
+
+    let boxY =
+      mouseY - tooltipHeight / 2;
+
+    boxY = Math.max(
+      padding,
+      Math.min(
+        boxY,
+        height - padding - tooltipHeight
+      )
+    );
+
+    tooltipBox
+      .attr("x", boxX)
+      .attr("y", boxY)
+      .attr("width", tooltipWidth)
+      .attr("height", tooltipHeight);
+
+    tooltipText
+      .attr("x", boxX + paddingX)
+      .attr("y", boxY + paddingTop);
+
+    const pointerCenterY = Math.max(
+      boxY + pointerSize + 2,
+      Math.min(
+        mouseY,
+        boxY + tooltipHeight - pointerSize - 2
+      )
+    );
+
+    if (showOnLeft) {
+      const pointerBaseX = boxX + tooltipWidth - 1;
+
+      tooltipPointer.attr(
+        "d",
+        `M${pointerBaseX},${pointerCenterY - pointerSize}
+         L${mouseX},${mouseY}
+         L${pointerBaseX},${pointerCenterY + pointerSize}
+         Z`
+      );
+    } else {
+      const pointerBaseX = boxX + 1;
+
+      tooltipPointer.attr(
+        "d",
+        `M${pointerBaseX},${pointerCenterY - pointerSize}
+         L${mouseX},${mouseY}
+         L${pointerBaseX},${pointerCenterY + pointerSize}
+         Z`
+      );
+    }
+
+    /*
+      Keeps the tooltip above all other SVG elements during interaction.
+    */
+    tooltip.raise();
+  }
+}
+
+/* Shared map highlight helpers */
+
+function highlightMapState(uf) {
+  const states = d3.selectAll("#map .state");
+
+  states
+    .classed(
+      "is-muted",
+      d => d.properties.SIGLA_UF !== uf
+    )
+    .classed(
+      "is-highlighted",
+      d => d.properties.SIGLA_UF === uf
+    );
+
+  states
+    .filter(d => d.properties.SIGLA_UF === uf)
+    .raise();
+}
+
+function clearMapHighlight() {
+  d3.selectAll("#map .state")
+    .classed("is-muted", false)
+    .classed("is-highlighted", false);
+}
+
+/* Map toggle control */
+
+function setMapMetric(metric) {
+  currentMetric = metric;
+
+  d3.selectAll("#map-toggle button")
+    .classed("active", function() {
+      return d3.select(this).attr("data-metric") === metric;
+    });
+
+  d3.select("#map-subtitle")
+    .text(
+      metric === "total_casos"
+        ? "Total cases, 2024"
+        : "Cases per 1,000 live births, 2024"
+    );
+
+  drawMap();
+  drawRegionGrid();
+}
+
+d3.selectAll("#map-toggle button")
+  .on("click", function() {
+    const metric = d3.select(this).attr("data-metric");
+    setMapMetric(metric);
+  });
+
+/* Region grid */
+
+function drawRegionGrid() {
+  const container = d3.select("#region-grid");
+
+  container.selectAll("*").remove();
+
+  const states = regions[currentRegion];
+
+  const regionGroup = container.append("section")
+    .attr("class", "region-group");
+
+  regionGroup.append("h4")
+    .text(currentRegion);
+
+  const grid = regionGroup.append("div")
+    .attr("class", "sparkline-grid");
+
+  states.forEach((uf, cardIndex) => {
+    const series = stateData
+      .filter(d => d.sigla_uf === uf)
+      .sort((a, b) => d3.ascending(a.ano, b.ano));
+
+    if (!series.length) return;
+
+    const lastRow = series[series.length - 1];
+
+    const card = grid.append("article")
+      .attr("class", "sparkline-card")
+      .attr("data-uf", uf)
+      .attr("tabindex", 0)
+      .attr("role", "img")
+      .attr("aria-label", () => {
+        const value = currentMetric === "total_casos"
+          ? lastRow[currentMetric].toLocaleString("en-US")
+          : lastRow[currentMetric].toFixed(1);
+
+        const suffix = currentMetric === "total_casos"
+          ? "cases"
+          : "cases per 1,000 live births";
+
+        return `${uf}, ${lastRow.ano}: ${value} ${suffix}`;
+      })
+      .on("pointerenter focus", () => {
+        highlightMapState(uf);
+      })
+      .on("pointerleave blur", () => {
+        clearMapHighlight();
+      });
+
+    const header = card.append("div")
+      .attr("class", "sparkline-card-header");
+
+    header.append("strong")
+      .text(uf);
+
+    const sparkSvg = card.append("svg");
+
+    drawSparkline(sparkSvg, series, cardIndex);
+  });
+}
+
+/* Sparkline (mini charts) component */
+
+function drawSparkline(svg, data, cardIndex = 0) {
+  const width = 180;
+  const height = 115;
+
+  const margin = {
+    top:8,
+    right:10,
+    bottom:24,
+    left:10
+  };
+
+  svg
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
+
+  const x = d3.scaleLinear()
+    .domain([2004, 2024])
+    .range([margin.left, width - margin.right]);
+
+  const values = data
+    .map(d => d[currentMetric])
+    .filter(Number.isFinite);
+
+  const yMax = d3.max(values) || 1;
+
+  const y = d3.scaleLinear()
+    .domain([0, yMax])
+    .nice()
+    .range([height - margin.bottom, margin.top]);
+
+  const line = d3.line()
+    .defined(d => Number.isFinite(d[currentMetric]))
+    .x(d => x(d.ano))
+    .y(d => y(d[currentMetric]));
+
+  const xAxis = svg.append("g")
+    .attr("class", "sparkline-axis")
+    .attr("transform", `translate(0,${height - margin.bottom})`)
+    .call(
+      d3.axisBottom(x)
+        .tickValues([2004, 2024])
+        .tickFormat(d3.format("d"))
+        .tickSize(3)
+        .tickSizeOuter(0)
+    );
+
+  xAxis.select(".domain").remove();
+
+  xAxis.selectAll(".tick:first-of-type text")
+    .attr("text-anchor", "start");
+
+  xAxis.selectAll(".tick:last-of-type text")
+    .attr("text-anchor", "end");
+
+  const linePath = svg.append("path")
+    .datum(data)
+    .attr("class", "sparkline-line")
+    .attr("d", line);
+
+  const lineLength = linePath.node().getTotalLength();
+
+  linePath
+    .attr("stroke-dasharray", lineLength)
+    .attr("stroke-dashoffset", lineLength)
+    .transition()
+    .delay(cardIndex * 90)
+    .duration(750)
+    .ease(d3.easeCubicOut)
+    .attr("stroke-dashoffset", 0);
+
+  const lastRow = data[data.length - 1];
+
+  if (lastRow && Number.isFinite(lastRow[currentMetric])) {
+    const lastX = x(lastRow.ano);
+    const lastY = y(lastRow[currentMetric]);
+
+    svg.append("circle")
+      .attr("class", "sparkline-last-point")
+      .attr("cx", lastX)
+      .attr("cy", lastY)
+      .attr("r", 2.7)
+      .attr("opacity", 0)
+      .transition()
+      .delay(cardIndex * 90 + 680)
+      .duration(220)
+      .attr("opacity", 1);
+
+    svg.append("text")
+      .attr("class", "sparkline-last-value")
+      .attr("x", lastX)
+      .attr("y", Math.max(margin.top + 9, lastY - 9))
+      .attr("text-anchor", "middle")
+      .attr("opacity", 0)
+      .text(
+        currentMetric === "total_casos"
+          ? lastRow[currentMetric].toLocaleString("en-US")
+          : lastRow[currentMetric].toFixed(1)
+      )
+      .transition()
+      .delay(cardIndex * 90 + 680)
+      .duration(220)
+      .attr("opacity", 1);
+  }
+}
+
+/* Region control */
+
+function setRegion(region) {
+  currentRegion = region;
+
+  d3.selectAll("#region-toggle button")
+    .classed("active", function() {
+      return d3.select(this).attr("data-region") === region;
+    });
+
+  drawRegionGrid();
+}
+
+d3.selectAll("#region-toggle button")
+  .on("click", function() {
+    const region = d3.select(this).attr("data-region");
+    setRegion(region);
+  });
+
+/* 2024 profile charts */
+
+/*
+  Converts category totals into exactly 100 waffle cells.
+
+  The function first calculates the exact percentage for each
+  category, rounds each value down, and then distributes the
+  remaining cells according to the largest decimal remainders.
+*/
+
+function createWaffleData(categories) {
+  const total = d3.sum(categories, d => d.value);
+
+  const calculated = categories.map(category => {
+    const exactSquares = category.value / total * 100;
+    const wholeSquares = Math.floor(exactSquares);
+
+    return {
+      ...category,
+      exactSquares,
+      squares:wholeSquares,
+      remainder:exactSquares - wholeSquares
+    };
+  });
+
+  const assignedSquares = d3.sum(
+    calculated,
+    d => d.squares
+  );
+
+  const remainingSquares = 100 - assignedSquares;
+
+  calculated
+    .sort((a, b) =>
+      d3.descending(a.remainder, b.remainder)
+    )
+    .slice(0, remainingSquares)
+    .forEach(category => {
+      category.squares += 1;
+    });
+
+  const categoryOrder = new Map(
+    categories.map((d, i) => [d.category, i])
+  );
+
+  calculated.sort(
+    (a, b) =>
+      categoryOrder.get(a.category) -
+      categoryOrder.get(b.category)
+  );
+
+  /*
+    Creates one object for each of the 100 cells.
+  */
+  return calculated.flatMap(category =>
+    d3.range(category.squares).map(() => ({
+      category:category.category,
+      color:category.color,
+      value:category.value,
+      percentage:category.value / total * 100
+    }))
+  );
+}
+
+/* Waffle chart component */
+
+function drawWaffleChart({
+  selector,
+  categories,
+  note
+}) {
+  const svg = d3.select(selector);
+
+  const columns = 10;
+  const rows = 10;
+
+  const squareSize = 19;
+  const gap = 4;
+
+  const gridWidth =
+    columns * squareSize +
+    (columns - 1) * gap;
+
+  const gridHeight =
+    rows * squareSize +
+    (rows - 1) * gap;
+
+  const width = 360;
+
+  /*
+    All charts reserve the same vertical space for a two-line legend.
+    This keeps the notes and waffle grids aligned across the three cards.
+  */
+ /*
+  All charts reserve the same vertical space for a two-line legend.
+  This keeps the scale notes and waffle grids aligned.
+*/
+
+  const legendX = 0;
+  const legendY = 2;
+  const legendHeight = 48;
+
+  const legendItemGap = 18;
+    const legendRowGap = 25;
+  const legendAvailableWidth = width;
+
+  const noteY = legendY + legendHeight + 6;
+
+  const gridY = noteY + 16;
+
+  const height = gridY + gridHeight + 8;
+
+  svg
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
+
+  svg.selectAll("*").remove();
+
+  const accessibleText = {
+    "#age-chart": {
+      title:"Live births by age in 2024",
+      description:"A waffle chart showing that 95.5% of the girls were 13 or 14 years old."
+    },
+    "#race-chart": {
+      title:"Recorded race or color in 2024",
+      description:"A waffle chart showing that 74.4% were registered as Black or parda, 16.9% as White, and 8.7% as Indigenous, Asian, or not recorded."
+    },
+    "#marital-chart": {
+      title:"Recorded marital status in 2024",
+      description:"A waffle chart showing that 89% were registered as single."
+    }
+  }[selector];
+
+  if (accessibleText) {
+    svg.append("title")
+      .text(accessibleText.title);
+
+    svg.append("desc")
+      .text(accessibleText.description);
+  }
+
+  const waffleData = createWaffleData(categories);
+
+  /* Waffle chart legend */
+
+  const legend = svg.append("g")
+    .attr("class", "waffle-legend")
+    .attr(
+      "transform",
+      `translate(${legendX},${legendY - 20})`
+    );
+
+  const legendItems = legend.selectAll(".waffle-legend-item")
+    .data(categories)
+    .join("g")
+    .attr("class", "waffle-legend-item");
+
+  legendItems.append("rect")
+    .attr("width", 13)
+    .attr("height", 13)
+    .attr("rx", 2)
+    .attr("fill", d => d.color);
+
+  legendItems.append("text")
+    .attr("x", 20)
+    .attr("y", 1)
+    .attr("dominant-baseline", "hanging")
+    .text(d => d.category);
+
+  /*
+    Positions legend items using their rendered widths.
+    Items move to a second row when they no longer fit.
+  */
+  let currentX = 0;
+  let currentY = 0;
+
+  legendItems.each(function() {
+    const item = d3.select(this);
+    const itemWidth = this.getBBox().width;
+
+    const needsNewRow =
+      currentX > 0 &&
+      currentX + itemWidth > legendAvailableWidth;
+
+    if (needsNewRow) {
+      currentX = 0;
+      currentY += legendRowGap;
+    }
+
+    item.attr(
+      "transform",
+      `translate(${currentX},${currentY})`
+    );
+
+    currentX += itemWidth + legendItemGap;
+  });
+
+  /*
+    The scale note has the same vertical position in all three charts.
+  */
+  if (note) {
+    svg.append("text")
+      .attr("class", "waffle-caption")
+      .attr("x", 0)
+      .attr("y", noteY - 15)
+      .attr("text-anchor", "start")
+      .text(note);
+  }
+
+  /*
+    The waffle itself is centered horizontally.
+  */
+  const gridX =
+    (width - gridWidth) / 2;
+
+  /* Waffle grid */
+
+  const squares = svg.selectAll(".waffle-square")
+    .data(waffleData)
+    .join("rect")
+    .attr("class", "waffle-square")
+    .attr("width", squareSize)
+    .attr("height", squareSize)
+    .attr("rx", 3)
+    .attr("x", (_, i) => {
+      const column = i % columns;
+
+      return gridX + column * (squareSize + gap);
+    })
+    .attr("y", (_, i) => {
+      const row = Math.floor(i / columns);
+
+      /*
+        Inverts the row order so the waffle fills
+        from the bottom upward.
+      */
+      const invertedRow = rows - 1 - row;
+
+      return gridY + invertedRow * (squareSize + gap);
+    })
+    .attr("fill", d => d.color)
+    .attr("opacity", 0);
+
+  squares
+    .transition()
+    .delay((_, i) => i * 10)
+    .duration(220)
+    .ease(d3.easeCubicOut)
+    .attr("opacity", 1);
+}
+
+function drawAgeChart() {
+  const categories = dataAge.map((d, i) => ({
+    ...d,
+    color:[
+      "#c6b7ea",
+      "#f0708a",
+      "#55545a"
+    ][i]
+  }));
+
+  drawWaffleChart({
+    selector:"#age-chart",
+    categories,
+    note:"1 square ≈ 1% of cases, or about 120 births."
+  });
+}
+
+function drawRaceChart() {
+  const categories = dataRace.map((d, i) => ({
+    ...d,
+    color:[
+      "#c6b7ea",
+      "#f0708a",
+      "#55545a"
+    ][i]
+  }));
+
+  drawWaffleChart({
+    selector:"#race-chart",
+    categories,
+    note:"1 square ≈ 1% of cases, or about 120 births."
+  });
+}
+
+function drawMaritalChart() {
+  const categories = dataMaritalStatus.map((d, i) => ({
+    ...d,
+    color:[
+      "#c6b7ea",
+      "#f0708a",
+      "#55545a"
+    ][i]
+  }));
+
+  drawWaffleChart({
+    selector:"#marital-chart",
+    categories,
+    note:"1 square ≈ 1% of cases, or about 120 births."
+  });
+}
+
+function drawProfileCharts() {
+  drawAgeChart();
+  drawRaceChart();
+  drawMaritalChart();
+}
+
+/* Initialization */
+
+async function init() {
+  /*
+    These elements do not depend on external files,
+    so they run immediately.
+  */
+  animateCounter();
+  drawLineChart(false);
+  observeLineChart();
+
+  try {
+    drawProfileCharts();
+  } catch (error) {
+    console.error("Error drawing profile charts:", error);
+  }
+
+  try {
+    /*
+      Load the external files required by the map.
+    */
+    geojson = await d3.json("BR_UF_2025_IBGE.json");
+
+    stateData = await d3.csv("uf_year.csv", d => ({
+      sigla_uf: d.sigla_uf,
+      ano: +d.ano,
+      total_casos: +d.total_casos,
+      total_nascidos_vivos: +d.total_nascidos_vivos_br,
+      casos_por_mil: +d.casos_por_mil
+    }));
+
+    drawMap();
+    drawRegionGrid();
+
+  } catch (error) {
+    console.error("Error loading map data:", error);
+  }
+}
+
+init();
+
+</script>
+
+</body>
+</html>
